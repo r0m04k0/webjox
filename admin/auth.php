@@ -29,7 +29,6 @@
         $result = mysqli_fetch_array($stmt->get_result());
         
         if ($result[0] == $_SESSION['hashcode']) {
-            echo $result[0];
             header('Location: ./index.php');
             exit();
         }
@@ -89,33 +88,22 @@
         mysqli_query($connect, "UPDATE `users` SET `hashcode` = '$hashcode' WHERE `id` = $id; " );
         $enter_site = Login($hashcode, $id, $remember);
 
-        }
+    }
         
-        if ($enter_site) {
-            
-            $ip = $_SERVER['REMOTE_ADDR'];
-            mysqli_query($connect, "INSERT INTO visits (user_id, ip) VALUES ($id, $ip); " );
-            
-            header('Location: index.php');           
-            
-            exit();
-        }
+    if ($enter_site) {
         
+        $ip = $_SERVER['REMOTE_ADDR'];
+        mysqli_query($connect, "INSERT INTO `visits` (`user_id`, `ip`) VALUES ($id, '$ip'); " );
+        
+        header('Location: index.php');           
+        
+        exit();
+    }
+
+    include("./elements/head.php");
 
 ?>
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <link rel="icon" href="favicon.ico">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="./style.css">
-    <title>Admin Panel</title>
-</head>
 
 
 
@@ -129,7 +117,7 @@
             <span class="navbar-toggler-icon"></span>
             </button>
         </div>
-        </nav>
+    </nav>
         
     </header>
     
