@@ -1,23 +1,38 @@
 <?php
 
+    session_start();
     include("../connect.php");
 
-    function Login($login, $remember) {
+    function Login($hashcode, $id, $remember) {
         
-        $_SESSION['login'] = $login;
+        $_SESSION['hashcode'] = $hashcode;
+        $_SESSION['id'] = $id;
 
         if ($remember) {
-            setcookie('login', $login, time()+3600*24*7);
+            setcookie('hashcode', $hashcode, time()+3600*24*7);
+            setcookie('id', $id, time()+3600*24*7);
         }
 
         return true;
     }
 
-    session_start();
+    if (!isset($_SESSION['hashcode']) && isset($_COOKIE['hashcode']) && !isset($_SESSION['id']) && isset($_COOKIE['id'])) {
+        $_SESSION['hashcode'] = $_COOKIE['hashcode'];
+        $_SESSION['id'] = $_COOKIE['id'];
+    }
 
-    if (isset($_SESSION['login'])) {
-        header('Location: index.php');           
-        exit();
+    if (isset($_SESSION['hashcode']) && isset($_SESSION['id'])) {
+    
+        $stmt = $connect->prepare("SELECT `hashcode` FROM users WHERE `id` = ?;");
+        $stmt->bind_param("i", $_SESSION['id']);
+        $stmt->execute();
+        $result = mysqli_fetch_array($stmt->get_result());
+        
+        if ($result[0] == $_SESSION['hashcode']) {
+            echo $result[0];
+            header('Location: ./index.php');
+            exit();
+        }
     }
 
     $enter_site = false;
@@ -70,7 +85,9 @@
         }
 
         $id = $row['id'];
-        $enter_site = Login($login, $remember);
+        $hashcode = md5(time());
+        mysqli_query($connect, "UPDATE `users` SET `hashcode` = '$hashcode' WHERE `id` = $id; " );
+        $enter_site = Login($hashcode, $id, $remember);
 
         }
         
