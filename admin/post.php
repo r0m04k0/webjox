@@ -1,6 +1,33 @@
 <?php
 
-    include("./connect.php");
+    include("../connect.php");
+
+    if (!isset($_SESSION['hashcode']) && isset($_COOKIE['hashcode']) && !isset($_SESSION['id']) && isset($_COOKIE['id'])) {
+        $_SESSION['hashcode'] = $_COOKIE['hashcode'];
+        $_SESSION['id'] = $_COOKIE['id'];
+    }
+
+    if (isset($_SESSION['hashcode']) && isset($_SESSION['id'])) {
+        $stmt = $connect->prepare("SELECT `hashcode`, `login`, `name`, `roles`.`role` FROM users, roles WHERE `users`.`id` = ? AND `roles`.`id` = `users`.`role`;");
+        $stmt->bind_param("i", $_SESSION['id']);
+        $stmt->execute();
+        $result = mysqli_fetch_array($stmt->get_result());
+
+        if ($result['hashcode'] != $_SESSION['hashcode']) {
+            header('Location: auth.php');
+            exit();
+        }
+
+        $_SESSION['role'] = $result['role'];
+        $_SESSION['login'] = $result['login'];
+        $_SESSION['name'] = $result['name'];
+
+    }
+    else {
+        header('Location: logout.php');
+        exit();
+    }
+
     include("./elements/head.php");
 
     if (empty($_GET['id'])) {
@@ -22,6 +49,8 @@
             
                 <a class='nav-link' aria-current='page' href='index.php'>Главная</a>
                 <a class='nav-link' aria-current='page' href='posts.php'>Посты</a>
+                <a class='nav-link' aria-current='page' href=''>Добавить пост</a>
+                <a class='nav-link' href='logout.php'>Выйти</a>
             
             </div>
             </div>
@@ -71,13 +100,14 @@
     $author = $row['author'];
     $id = $row['id'];
 
+
     echo "<div class='row'>
             <div class='col-6 col-md-4'><a class='nav-link text-start' aria-current='page' href='posts.php'><svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' fill='currentColor' class='bi bi-arrow-left' viewBox='0 0 16 16'>
                 <path fill-rule='evenodd' d='M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z'/>
             </svg></a></div>
             <div class='col-6 col-md-4'><h2 class='text-center'>$title</h2></div>
             <div class='col-6 col-md-4'></div>
-        </div>";
+    </div>";
 
     echo "<div class='row mx-auto align-items-center mt-5'>
     
