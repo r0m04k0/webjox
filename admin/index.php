@@ -56,6 +56,12 @@
 </header>
     
 <main class="m-3">
+
+<div class="d-grid gap-2 d-md-block">
+  <button class="btn btn-primary" type="button">Button</button>
+  <button class="btn btn-primary" type="button">Button</button>
+</div>
+
     <div class="row row-cols-1 row-cols-md-5 g-4">
 
     <?php

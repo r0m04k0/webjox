@@ -1,7 +1,11 @@
 <?php
 
+    session_start();    
+
+    include("./connect.php");
     include("./connect.php");
     include("./elements/head.php");
+
 ?>
 
 <body>
@@ -25,20 +29,58 @@
     </nav>
         
 </header>
+
+
     
 <main class="m-3">
+
+    <form action="" method="get" enctype="multipart/form-data">
+
+        <?php
+
+        $category = !empty($_GET['category']) ? $_GET['category'] : 'all';
+
+        $result = mysqli_query($connect, "SELECT DISTINCT category FROM categories" );
+        echo "<select class='mb-3' name='category' onchange='this.form.submit()'>";
+
+        if ($category != 'all') {
+            echo "<option value='$category' selected>$category</option>";
+            echo "<option value = 'all'> Все теги </option>";    
+        }
+        else echo "<option value = 'all' selected> Все теги </option>";
+
+        while ($row=mysqli_fetch_array($result)) {
+            if ($row['category'] != $category) {
+                echo "<option value = ".$row['category']."> ".$row['category']." </option>";
+            }
+        }
+        echo "</select>";
+        ?>
+
+    </form>
+
     <div class="row row-cols-1 row-cols-md-5 g-4">
 
     <?php
 
-    $query = "SELECT `title` AS `title`,
-        `caption` AS `caption`,
-        `created` AS `created`,
-        `images`.`path` AS `image`,
-        `posts`.`id` AS `id`
-        FROM `posts`, `images` 
-        WHERE `posts`.`image` = `images`.`id` 
-        ORDER BY `created` DESC;";
+    if (isset($_GET)) {
+
+        $category = !empty($_GET['category']) ? $_GET['category'] : 'all';
+
+        $query = "SELECT `title` AS `title`,
+                `caption` AS `caption`,
+                `created` AS `created`,
+                `images`.`path` AS `image`,
+                `posts`.`id` AS `id`,
+                `categories`.`category` AS `category`
+                FROM `posts`, `images`, `categories` 
+                WHERE `posts`.`image` = `images`.`id` AND `posts`.`category` = `categories`.`id`";
+            
+        if ($category != 'all') {
+            $query .= " AND `categories`.`category` = '$category' ";
+        }
+        $query .= " ORDER BY `created` DESC ;";
+    }
 
     $result = mysqli_query($connect, $query);
 
@@ -92,6 +134,18 @@
     </nav>
 
 </main>    
+
+<script>
+
+$(".click").click(function(category){
+   $.ajax({ 
+         type: 'get',
+         url: 'posts.php',
+         data: (category)
+})
+})
+
+</script>
 
 
 </body>
