@@ -1,10 +1,12 @@
 <?php
-
-    session_start();    
-
-    include("./connect.php");
+    session_start();
     include("./connect.php");
     include("./elements/head.php");
+
+    if (!isset($_GET['limit']) && isset($_SESSION['limit']) && !isset($_GET['category']) && isset($_SESSION['category'])) {
+        $_GET['limit'] = $_SESSION['limit'];
+        $_GET['category'] = $_SESSION['category'];
+    }
 
 ?>
 
@@ -76,6 +78,10 @@
 
     $category = !empty($_GET['category']) ? $_GET['category'] : 'all';
     $limit = !empty($_GET['limit']) ? $_GET['limit'] : 10;
+
+    $_SESSION['limit'] = $limit;
+    $_SESSION['category'] = $category;
+
     $page = !empty($_GET['page']) ? $_GET['page'] : 1;
     if ($page == 1) {
         $offset = 0;
@@ -84,15 +90,17 @@
         $offset = $offset = ($page-1) * $limit;
     }
     
-
     $query = "SELECT `title` AS `title`,
             `caption` AS `caption`,
-            `created` AS `created`,
+            DATE_FORMAT(`created`, '%d.%m.%Y') AS `created`,
             `images`.`path` AS `image`,
             `posts`.`id` AS `id`,
             `categories`.`category` AS `category`
-            FROM `posts`, `images`, `categories` 
-            WHERE `posts`.`image` = `images`.`id` AND `posts`.`category` = `categories`.`id`";
+            FROM `posts`, `images`, `categories`, `statuses`
+            WHERE `posts`.`image` = `images`.`id` 
+            AND `posts`.`category` = `categories`.`id` 
+            AND `posts`.`status` = `statuses`.`id` 
+            AND `statuses`.`status` = 'published' ";
         
     if ($category != 'all') {
         $query .= " AND `categories`.`category` = ? ";
@@ -140,8 +148,9 @@
                         <img src='/$image' class='card-img-top' alt='...'>
                         <div class='card-body'>
                             <h5 class='card-title'>$title</h5>
+                            <h6 class='card-subtitle mb-2 text-body-secondary'>$created</h6>
                             <p class='card-text'>$caption</p>
-                            <a href='#' class='btn btn-primary'>Читать</a>
+                            <a href='./post.php?id=$id' class='btn btn-primary'>Читать</a>
                         </div>
                     </div>
                 </div>";
@@ -208,19 +217,5 @@
     
 
 </main>    
-
-<script>
-
-$(".click").click(function(category){
-   $.ajax({ 
-         type: 'get',
-         url: 'posts.php',
-         data: (category)
-})
-})
-
-</script>
-
-
 </body>
 </html>
