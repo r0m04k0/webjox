@@ -3,9 +3,18 @@
     include("./connect.php");
     include("./elements/head.php");
 
-    if (!isset($_GET['limit']) && isset($_SESSION['limit']) && !isset($_GET['category']) && isset($_SESSION['category'])) {
+    if (!isset($_GET['limit']) && isset($_SESSION['limit'])) {
         $_GET['limit'] = $_SESSION['limit'];
+    }
+
+    
+    if (!isset($_GET['category']) && isset($_SESSION['category'])) {
         $_GET['category'] = $_SESSION['category'];
+    }
+
+    
+    if (!isset($_GET['page']) && isset($_SESSION['page'])) {
+        $_GET['page'] = $_SESSION['page'];
     }
 
 ?>
@@ -78,11 +87,12 @@
 
     $category = !empty($_GET['category']) ? $_GET['category'] : 'all';
     $limit = !empty($_GET['limit']) ? $_GET['limit'] : 10;
+    $page = !empty($_GET['page']) ? $_GET['page'] : 1;
 
     $_SESSION['limit'] = $limit;
     $_SESSION['category'] = $category;
+    $_SESSION['page'] = $page;
 
-    $page = !empty($_GET['page']) ? $_GET['page'] : 1;
     if ($page == 1) {
         $offset = 0;
     }
