@@ -50,7 +50,7 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Блог</a>
+            <a class="navbar-brand" href="#">Admin Panel</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
@@ -59,7 +59,7 @@
             
                 <a class='nav-link' aria-current='page' href='index.php'>Главная</a>
                 <a class='nav-link active' aria-current='page' href='posts.php'>Посты</a>
-                <a class='nav-link' aria-current='page' href=''>Добавить пост</a>
+                <? echo $_SESSION['role'] == 'admin' ? "<a class='nav-link' aria-current='page' href=''>Добавить пост</a>" : '' ?>
                 <a class='nav-link' href='logout.php'>Выйти</a>
             
             </div>
@@ -133,12 +133,12 @@
             DATE_FORMAT(`created`, '%d.%m.%Y') AS `created`,
             `images`.`path` AS `image`,
             `posts`.`id` AS `id`,
+            `statuses`.`status` AS `status`,
             `categories`.`category` AS `category`
             FROM `posts`, `images`, `categories`, `statuses`
             WHERE `posts`.`image` = `images`.`id` 
             AND `posts`.`category` = `categories`.`id` 
-            AND `posts`.`status` = `statuses`.`id` 
-            AND `statuses`.`status` = 'published' ";
+            AND `posts`.`status` = `statuses`.`id` ";
         
     if ($category != 'all') {
         $query .= " AND `categories`.`category` = ? ";
@@ -179,18 +179,43 @@
             $caption = $row['caption'];
             $image = $row['image'];
             $created = $row['created'];
+            $status = $row['status'];
             $id = $row['id'];
+
+            switch ($_SESSION['role']) {
+                case 'admin':
+                    $dropdown = "<ul class='dropdown-menu'>
+                    <li><a href='./post.php?id=$id' class='dropdown-item'>Cмотреть</a></li>
+                    <li><a href='./post.php?id=$id' class='dropdown-item'>Редактировать</a></li>
+                    <li><a href='./delete.php?id=$id' class='dropdown-item'>Удалить</a></li>
+                    </ul>";
+                    break;
+                case 'moderator':
+                    $dropdown = "<ul class='dropdown-menu'>
+                    <li><a href='./post.php?id=$id' class='dropdown-item'>Cмотреть</a></li>
+                    <li><a href='./post.php?id=$id' class='dropdown-item'>Редактировать</a></li>
+                    </ul>";
+                    break;
+            }
+
+            $color = $status == 'published' ? 'yellowgreen' : 'red';
 
             echo "<div class='col'>
                     <div class='card h-100'>
                         <img src='/$image' class='card-img-top' alt='...'>
+                        <div class='card-img-overlay'>
+                            <h5 class='card-title' style='color: $color'>$status</h5>
+                        </div>
                         <div class='card-body'>
                             <h5 class='card-title'>$title</h5>
                             <h6 class='card-subtitle mb-2 text-body-secondary'>$created</h6>
                             <p class='card-text'>$caption</p>
-                            <a href='./post.php?id=$id' class='btn btn-primary'>Cмотреть</a>
-                            <a href='./post.php?id=$id' class='btn btn-primary'>Редактировать</a>
-                            <a href='./post.php?id=$id' class='btn btn-primary'>Удалить</a>
+                            <div class='btn-group' role='group'>
+                                <button type='button' class='btn btn-primary dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>
+                                Действия
+                                </button>
+                                $dropdown
+                            </div>
                         </div>
                     </div>
                 </div>";

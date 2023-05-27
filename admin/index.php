@@ -50,7 +50,7 @@
             
                 <a class='nav-link active' aria-current='page' href='index.php'>Главная</a>
                 <a class='nav-link' aria-current='page' href='posts.php'>Посты</a>
-                <a class='nav-link' aria-current='page' href=''>Добавить пост</a>
+                <? echo $_SESSION['role'] == 'admin' ? "<a class='nav-link' aria-current='page' href=''>Добавить пост</a>" : '' ?>
                 <a class='nav-link' href='logout.php'>Выйти</a>
             
             </div>
