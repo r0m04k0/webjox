@@ -1,8 +1,7 @@
 <?php
 
-    include("../connect.php");
-
     session_start();
+    include("../connect.php");
 
     if (!isset($_SESSION['hashcode']) && isset($_COOKIE['hashcode']) && !isset($_SESSION['id']) && isset($_COOKIE['id'])) {
         $_SESSION['hashcode'] = $_COOKIE['hashcode'];
@@ -50,7 +49,7 @@
             
                 <a class='nav-link active' aria-current='page' href='index.php'>Главная</a>
                 <a class='nav-link' aria-current='page' href='posts.php'>Посты</a>
-                <? echo $_SESSION['role'] == 'admin' ? "<a class='nav-link' aria-current='page' href=''>Добавить пост</a>" : '' ?>
+                <? echo $_SESSION['role'] == 'admin' ? "<a class='nav-link' aria-current='page' href='create.php'>Добавить пост</a>" : '' ?>
                 <a class='nav-link' href='logout.php'>Выйти</a>
             
             </div>

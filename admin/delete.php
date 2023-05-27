@@ -1,5 +1,6 @@
 <?php
 
+    session_start();
     include("../connect.php");
 
     if (!isset($_SESSION['hashcode']) && isset($_COOKIE['hashcode']) && !isset($_SESSION['id']) && isset($_COOKIE['id'])) {
@@ -28,6 +29,7 @@
         }
 
     }
+    
     else {
         header('Location: logout.php');
         exit();
@@ -49,10 +51,4 @@
     
     header('Location: posts.php');
                     
-    ?>
-
-
-</main>    
-
-</body>
-</html>
+?>

@@ -59,7 +59,7 @@
             
                 <a class='nav-link' aria-current='page' href='index.php'>Главная</a>
                 <a class='nav-link active' aria-current='page' href='posts.php'>Посты</a>
-                <? echo $_SESSION['role'] == 'admin' ? "<a class='nav-link' aria-current='page' href=''>Добавить пост</a>" : '' ?>
+                <? echo $_SESSION['role'] == 'admin' ? "<a class='nav-link' aria-current='page' href='create.php'>Добавить пост</a>" : '' ?>
                 <a class='nav-link' href='logout.php'>Выйти</a>
             
             </div>
@@ -85,7 +85,7 @@
 
         <div class="col-md-3">
             
-            <label class="control-label" for="category">Выберите кетегорию:</label>
+            <label class="control-label" for="category">Выберите категорию:</label>
 
             <?php
 

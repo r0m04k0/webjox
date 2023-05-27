@@ -57,7 +57,7 @@
 
         <div class="col-md-3">
             
-            <label class="control-label" for="category">Выберите кетегорию:</label>
+            <label class="control-label" for="category">Выберите категорию:</label>
 
             <?php
 
