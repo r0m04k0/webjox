@@ -81,13 +81,11 @@
 
             <?php
 
-            $result = mysqli_query($connect, "SELECT DISTINCT category FROM categories" );
+            $result = mysqli_query($connect, "SELECT DISTINCT category, id FROM categories" );
             echo "<select class='form-select' id='category' name='category'>";
 
             while ($row=mysqli_fetch_array($result)) {
-                if ($row['category'] != $category) {
-                    echo "<option value=".$row['id']."> ".$row['category']." </option>";
-                }
+                echo "<option value=".$row['id']."> ".$row['category']." </option>";
             }
             echo "<option class='new' value='new'>Новая категория</option>";
             echo "</select>";
@@ -107,7 +105,7 @@
             <label class="form-check-label" for="publish">Опубликовать</label>
         </div>
 
-        <div class="mb-3 col-md-1 form-check form-switch mx-auto">
+        <div class="d-grid gap-1 col-3 mx-auto">
             <button type="submit" name="submit" class="btn btn-dark mx-auto">Отправить</button>
         </div>
         

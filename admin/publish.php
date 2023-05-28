@@ -47,6 +47,7 @@
     }
     else {
         $query = "UPDATE `posts` SET `status` = 2 WHERE `id` = ? ;";
+
     }
 
     $stmt = $connect->prepare($query);

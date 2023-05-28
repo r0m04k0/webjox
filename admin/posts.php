@@ -190,7 +190,7 @@
                 case 'admin':
                     $dropdown = "<ul class='dropdown-menu'>
                     <li><a href='./post.php?id=$id' class='dropdown-item'>Cмотреть</a></li>
-                    <li><a href='./post.php?id=$id' class='dropdown-item'>Редактировать</a></li>
+                    <li><a href='./edit.php?id=$id' class='dropdown-item'>Редактировать</a></li>
                     <li><a href='./delete.php?id=$id' class='dropdown-item'>Удалить</a></li>
                     $publishAction
                     </ul>";
@@ -198,7 +198,7 @@
                 case 'moderator':
                     $dropdown = "<ul class='dropdown-menu'>
                     <li><a href='./post.php?id=$id' class='dropdown-item'>Cмотреть</a></li>
-                    <li><a href='./post.php?id=$id' class='dropdown-item'>Редактировать</a></li>
+                    <li><a href='./edit.php?id=$id' class='dropdown-item'>Редактировать</a></li>
                     </ul>";
                     break;
             }

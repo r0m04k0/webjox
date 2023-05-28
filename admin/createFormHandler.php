@@ -54,7 +54,7 @@
             }
         }
         
-        if (isset($_POST['new'])) {
+        if ($_POST['category'] == 'new') {
             $category = $_POST["new"];
 
             $stmt = $connect->prepare("INSERT INTO `categories` (`category`) VALUES (?);" );
@@ -64,7 +64,7 @@
             $category = $stmt->insert_id;
         }
         else {
-            $category = $_POST["category"];
+            $category = (int)$_POST["category"];
         }
 
         $stmt = $connect->prepare("INSERT INTO `images` (`path`) VALUES (?);" );
