@@ -44,11 +44,13 @@
     `images`.`path` AS `image`,
     `posts`.`id` AS `id`,
     `categories`.`category` AS `category`,
+    `statuses`.`status` AS `status`,
     `users`.`name` AS `author`
-    FROM `posts`, `images`, `categories`, `users` 
+    FROM `posts`, `images`, `categories`, `users`, statuses
     WHERE `posts`.`image` = `images`.`id` 
     AND `posts`.`category` = `categories`.`id`
     AND `users`.`id` = `posts`.`author_id`
+    AND `posts`.`status` = `statuses`.`id`
     AND `posts`.`id` = ? ;";
 
     $stmt = $connect->prepare($query);
@@ -70,7 +72,11 @@
     $created = $row['created'];
     $category = $row['category'];
     $author = $row['author'];
-    $id = $row['id'];
+    $status = $row['status'];
+
+    $isPublished = $status != 'published' ? 
+            "<input class='form-check-input' type='checkbox' role='switch' id='publish' name='publish' value='true'>" : 
+            "<input class='form-check-input' type='checkbox' role='switch' id='publish' name='publish' value='true' checked>"
 
 ?>
 
@@ -102,7 +108,7 @@
 
     <div class="row">
 
-    <form action="createFormHandler.php" method="post" enctype="multipart/form-data">
+    <form action="editFormHandler.php" method="post" enctype="multipart/form-data">
 
     <div class="mb-3 col-md-5 mx-auto">
         <label for="title" class="form-label">Заголовок</label>
@@ -123,7 +129,7 @@
 
             <?php
 
-            $result = mysqli_query($connect, "SELECT DISTINCT category FROM categories" );
+            $result = mysqli_query($connect, "SELECT DISTINCT category, id FROM categories" );
             echo "<select class='form-select' id='category' name='category'>";
 
             while ($row=mysqli_fetch_array($result)) {
@@ -151,10 +157,8 @@
             <img src='../<? echo $image ?>' class="rounded" style="width: 100px" alt="...">
         </div>
 
-        <div class="mb-3 col-md-5 form-check form-switch mx-auto">
-            <input class="form-check-input" type="checkbox" role="switch" id="publish" name="publish" value="true">
-            <label class="form-check-label" for="publish">Опубликовать</label>
-        </div>
+        <input type="hidden" name="id" value="<? echo $id ?>">
+        <input type="hidden" name="imagepath" value='<? echo $image ?>'>
 
         <div class="d-grid gap-2 col-3 mx-auto">
             <button type="submit" name="submit" class="btn btn-dark">Сохранить</button>
