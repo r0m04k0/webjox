@@ -182,12 +182,17 @@
             $status = $row['status'];
             $id = $row['id'];
 
+            $publishAction = $status == 'published' ? 
+            "<li><a href='./publish.php?id=$id&action=unpublish' class='dropdown-item'>Снять с публикации</a></li>" : 
+            "<li><a href='./publish.php?id=$id&action=publish' class='dropdown-item'>Опубликовать</a></li>"; 
+
             switch ($_SESSION['role']) {
                 case 'admin':
                     $dropdown = "<ul class='dropdown-menu'>
                     <li><a href='./post.php?id=$id' class='dropdown-item'>Cмотреть</a></li>
                     <li><a href='./post.php?id=$id' class='dropdown-item'>Редактировать</a></li>
                     <li><a href='./delete.php?id=$id' class='dropdown-item'>Удалить</a></li>
+                    $publishAction
                     </ul>";
                     break;
                 case 'moderator':

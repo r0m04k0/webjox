@@ -40,8 +40,14 @@
     }
 
     $id = $_GET['id'];
+    $action = $_GET['action'];
 
-    $query = "DELETE FROM `posts` WHERE `id` = ? ;";
+    if ($action == 'unpublish') {
+        $query = "UPDATE `posts` SET `status` = 1 WHERE `id` = ? ;";
+    }
+    else {
+        $query = "UPDATE `posts` SET `status` = 2 WHERE `id` = ? ;";
+    }
 
     $stmt = $connect->prepare($query);
     $stmt->bind_param("i", $id);

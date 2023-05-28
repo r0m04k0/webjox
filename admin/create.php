@@ -60,7 +60,7 @@
 
     <div class="row">
 
-    <form action="" method="post">
+    <form action="createFormHandler.php" method="post" enctype="multipart/form-data">
 
     <div class="mb-3 col-md-5 mx-auto">
         <label for="title" class="form-label">Заголовок</label>
@@ -103,7 +103,7 @@
         </div>
 
         <div class="mb-3 col-md-5 form-check form-switch mx-auto">
-            <input class="form-check-input" type="checkbox" role="switch" id="publish" name="publish" value="1">
+            <input class="form-check-input" type="checkbox" role="switch" id="publish" name="publish" value="true">
             <label class="form-check-label" for="publish">Опубликовать</label>
         </div>
 
