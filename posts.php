@@ -155,12 +155,12 @@
 
             echo "<div class='col'>
                     <div class='card h-100'>
-                        <img src='/$image' class='card-img-top' alt='...'>
+                        <img src='./$image' class='card-img-top' alt='...'>
                         <div class='card-body'>
                             <h5 class='card-title'>$title</h5>
                             <h6 class='card-subtitle mb-2 text-body-secondary'>$created</h6>
                             <p class='card-text'>$caption</p>
-                            <a href='./post.php?id=$id' class='btn btn-primary'>Читать</a>
+                            <a href='./post.php?id=$id' class='btn btn-btn-dark'>Читать</a>
                         </div>
                     </div>
                 </div>";

@@ -207,7 +207,7 @@
 
             echo "<div class='col'>
                     <div class='card h-100'>
-                        <img src='/$image' class='card-img-top' alt='...'>
+                        <img src='../$image' class='card-img-top' alt='...'>
                         <div class='card-img-overlay'>
                             <h5 class='card-title' style='color: $color'>$status</h5>
                         </div>
@@ -216,7 +216,7 @@
                             <h6 class='card-subtitle mb-2 text-body-secondary'>$created</h6>
                             <p class='card-text'>$caption</p>
                             <div class='btn-group' role='group'>
-                                <button type='button' class='btn btn-primary dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>
+                                <button type='button' class='btn btn-dark dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>
                                 Действия
                                 </button>
                                 $dropdown

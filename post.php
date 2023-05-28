@@ -91,7 +91,7 @@
     </div>
 
     <div class='col'>
-        <img src='/$image' class='float-end' alt='...'>
+        <img src='./$image' class='float-end' alt='...'>
     </div>
 
     </div>";
